@@ -1,0 +1,29 @@
+;; shadow-cljs configuration
+{:source-paths ["src/frontend"
+                "src/backend"
+                "src/shared"
+                "./frontend-config.cljs"]
+
+ :dependencies     [[datascript "1.2.2"]
+                    [reagent "1.1.0"]
+                    [cider/cider-nrepl "0.28.6"]
+                    [kitchen-async "0.1.0-SNAPSHOT"]
+                    [lambdaisland/fetch "1.0.33"]
+                    [cljsjs/d3 "4.12.0-0"]]
+ :compiler-options {:infer-externs :auto}
+
+ ;; :npm-deps {"d3" "7.0.0"}
+ ;; :dev-http {8080 "_public"}
+
+ :builds {:frontend {:target           :browser
+                     :output-dir       "dist/public/_frontend"
+                     :compiler-options {:infer-externs :auto}
+                     :modules          {:main {:init-fn sfm.app/init}}}
+          :backend  {:target           :node-script
+                     :main             sfm.server/main
+                     :output-to        "dist/_backend/server.js"
+                     :compiler-options {:infer-externs :auto}
+                     :optimizations    :simple
+                     :source-map       true
+                     :devtools         {:after-load  sfm.server/start!
+                                        :before-load sfm.server/stop!}}}}
